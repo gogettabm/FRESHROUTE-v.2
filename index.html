@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+  <title>FreshRoute</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript"
+    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+  </script>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <a class="nav-brand" href="#">FreshRoute</a>
+
+  <div class="nav-dropdown">
+    <a class="nav-link" href="#">Transportation ▾</a>
+    <div class="mega-menu">
+      <div class="mega-inner">
+
+        <div class="mega-col">
+          <p class="mega-heading">Plan Your Trip</p>
+          <a href="#arrivals" class="mega-link"><span class="mega-icon">⏰</span>Arrival Times</a>
+          <a href="#" class="mega-link"><span class="mega-icon">🗺️</span>Trip Planner</a>
+          <a href="https://cdn.beta.metro.net/wp-content/uploads/2025/12/03103233/26-0888_online_system_map_47x47.5_DCR.pdf" target="_blank" class="mega-link"><span class="mega-icon">📅</span>Maps &amp; Schedules</a>
+          <a href="#" class="mega-link"><span class="mega-icon">🚉</span>Find a Station</a>
+        </div>
+
+        <div class="mega-col">
+          <p class="mega-heading">Alerts &amp; Updates</p>
+          <a href="#" class="mega-link"><span class="mega-icon">⚠️</span>Service Alerts</a>
+          <a href="#" class="mega-link"><span class="mega-icon">🚧</span>Construction Updates</a>
+          <a href="#" class="mega-link"><span class="mega-icon">📢</span>News &amp; Updates</a>
+        </div>
+
+        <div class="mega-col">
+          <p class="mega-heading">Fares &amp; Passes</p>
+          <a href="https://www.taptogo.net" target="_blank" class="mega-link"><span class="mega-icon">💳</span>TAP Card</a>
+          <a href="#" class="mega-link"><span class="mega-icon">💰</span>Fare Prices</a>
+          <a href="#" class="mega-link"><span class="mega-icon">🎓</span>Student Discount</a>
+          <a href="#" class="mega-link"><span class="mega-icon">👴</span>Senior Fares</a>
+        </div>
+      
+      </div>
+   </div>
+  </div>
+
+  <a class="nav-link" href="#food-resources">Food Access &amp; Resources</a>
+  <a class="nav-link" href="https://www.codepath.org" target="_blank">About</a>
+
+  <div class="nav-spacer"></div>
+
+  <button class="nav-pill" id="theme-btn">Dark Mode</button>
+  <button class="nav-pill" id="motion-btn">Reduce Motion</button>
+</nav>
+
+<!-- ===== ALERTS BAR ===== -->
+<span class="alert-text">
+  <strong>Service Alert:</strong> Delays possible systemwide during peak hours.
+  <a href="https://www.metro.net/riding/service-alerts/" target="_blank">All alerts ↗</a>
+  <a href="https://www.metro.net/riding/advisories/" target="_blank">Advisories ↗</a>
+</span>
+
+<!-- ===== HERO ===== -->
+<section id="arrivals" class="hero">
+  <div class="hero-inner">
+    <span class="hero-eyebrow">Los Angeles · Transit &amp; Food Access</span>
+    <h1 class="hero-title">Mapping Access.<br>Driving Change.</h1>
+    <p class="hero-sub">
+      Live bus &amp; train arrivals and EBT food resources,
+      in one place — for the communities that need them most.
+    </p>
+
+     <div class="search-widget">
+  <div class="widget-toggle">
+    <button class="toggle-btn active" id="tab-trip">🗺️ Plan a trip</button>
+    <button class="toggle-btn" id="tab-route">🚌 Find a route</button>
+  </div>
+
+  <div id="panel-trip" class="widget-panel">
+    <div class="trip-field">
+      <label for="trip-from">From</label>
+      <input id="trip-from" class="stop-input" type="text" placeholder="Departure address or place" autocomplete="off" />
+    </div>
+    <div class="trip-field">
+      <label for="trip-to">To</label>
+      <input id="trip-to" class="stop-input" type="text" placeholder="Destination address or place" autocomplete="off" />
+    </div>
+    <div class="trip-actions">
+      <button class="search-btn" id="trip-go">Get transit directions ↗</button>
+      <button class="ghost-btn" id="trip-swap">⇅ Swap</button>
+    </div>
+    <p class="trip-note" id="trip-note"></p>
+  </div>
+
+  <div id="panel-route" class="widget-panel" hidden>
+    <div class="widget-input-row">
+      <input id="route-input" class="stop-input" list="route-list" type="text" placeholder="Route number or line (e.g. 720, A Line)" autocomplete="off" />
+      <datalist id="route-list"></datalist>
+      <button class="search-btn" id="route-go">Find route</button>
+    </div>
+    <div id="route-results" class="widget-results"></div>
+  </div>
+
+  <p class="widget-hint" id="api-status">Loading route data from Metro…</p>
+ </div>
+</section>
+
+<!-- ===== SCROLL INDICATOR ===== -->
+<div class="scroll-hint">
+  <span class="scroll-dot"></span>
+  <span class="scroll-dot"></span>
+  <span class="scroll-dot"></span>
+</div>
+
+<!-- ===== QUICK LINKS ===== -->
+<div class="quicklinks">
+  <p class="quicklinks-label">Explore</p>
+  <div class="cards-row">
+    <a href="#arrivals" class="card-link">
+      <span class="card-icon">⏰</span>
+      <span class="card-label">Arrival Times</span>
+    </a>
+    <a href="#" class="card-link">
+      <span class="card-icon">🗺️</span>
+      <span class="card-label">Trip Planner</span>
+    </a>
+    <a href="#" class="card-link">
+      <span class="card-icon">⚠️</span>
+      <span class="card-label">Alerts</span>
+    </a>
+    <a href="https://cdn.beta.metro.net/wp-content/uploads/2025/12/03103233/26-0888_online_system_map_47x47.5_DCR.pdf"
+       target="_blank" class="card-link">
+      <span class="card-icon">📅</span>
+      <span class="card-label">Maps &amp; Schedules</span>
+    </a>
+  </div>
+</div>
+
+<!-- ===== BOTTOM LAYOUT ===== -->
+<div class="bottom-layout">
+
+  <!-- ===== TAP CARD / FARES ===== -->
+  <div class="tap-section">
+    <div class="tap-inner">
+
+      <div class="tap-card-visual">
+        <div class="tap-card">
+          <span class="tap-logo">TAP</span>
+          <span class="tap-card-sub">transit access pass</span>
+        </div>
+      </div>
+
+      <div class="tap-info">
+        <p class="tap-eyebrow">Pay your fare</p>
+        <h2 class="tap-title">Ride with TAP</h2>
+        <p class="tap-desc">
+          Load your TAP card online or at any Metro station kiosk.
+          Use it on buses, trains, and connecting agencies across LA County.
+        </p>
+
+        <div class="fare-grid">
+          <div class="fare-item">
+            <span class="fare-amount">$1.75</span>
+            <span class="fare-label">Single Ride</span>
+          </div>
+          <div class="fare-item">
+            <span class="fare-amount">$7.00</span>
+            <span class="fare-label">Day Pass</span>
+          </div>
+          <div class="fare-item">
+            <span class="fare-amount">$25.00</span>
+            <span class="fare-label">7-Day Pass</span>
+          </div>
+        <div class="fare-item">
+            <span class="fare-amount">$100.00</span>
+            <span class="fare-label">30-Day Pass</span>
+          </div>
+        </div>
+
+        <a href="https://www.taptogo.net" target="_blank" class="tap-btn">
+          Manage your TAP card ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- RSVP -->
+  <div id="rsvp">
+    <h2>Join Us</h2>
+    <div class="rsvp-container">
+      <p>Sign up to join our next community event and learn how to navigate food resources in your area.</p>
+    </div>
+    <form id="rsvp-form">
+      <input type="text" id="Name" aria-label="Your name" placeholder="Your name" required />
+      <input type="email" id="Email" aria-label="Your email" placeholder="Your email" required />
+      <input type="text" id="City" aria-label="Your city" placeholder="Your city" required />
+      <input id="zip-input" aria-label="ZIP code" type="text" placeholder="Enter ZIP code (e.g. 90001)" maxlength="5" />
+    </form>
+    <button id="rsvp-button">Submit RSVP</button>
+    <div class="rsvp-participants"></div>
+    <div id="counter-container"></div>
+  </div>
+
+  <!-- Food Resources -->
+  <div id="food-resources" class="food-resources-section">
+    <h2>Food Access Resources</h2>
+
+    <div class="food-search">
+      <input id="zip-input" type="text" placeholder="Enter ZIP code (e.g. 90001)" maxlength="5" />
+      <button id="food-search-btn">Search</button>
+    </div>
+
+    <div class="food-tabs">
+      <button class="food-tab active" data-tab="snap">🏪 SNAP Stores</button>
+      <button class="food-tab" data-tab="markets">🌽 Farmers Markets</button>
+      <button class="food-tab" data-tab="atlas">🗺️ Food Desert Map</button>
+    </div>
+
+    <div id="snap-panel" class="food-panel">
+      Enter a ZIP code above to find nearby SNAP stores.
+    </div>
+    <div id="markets-panel" class="food-panel" style="display:none;">
+      Enter a ZIP code above to find nearby farmers markets.
+    </div>
+    <div id="atlas-panel" class="food-panel" style="display:none;">
+      <p>The USDA Food Access Research Atlas shows food desert areas across the US.</p>
+      <a href="https://www.ers.usda.gov/data-products/food-access-research-atlas/go-to-the-atlas/"
+         target="_blank">View Food Access Atlas ↗</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== MODAL ===== -->
+<div id="success-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">
+  <div style="background:var(--surface); border-radius:12px; padding:32px; max-width:400px; width:90%; text-align:center;">
+    <img id="modal-image" src="./img/Food Drive Transit.png" alt="FreshRoute"
+         style="width:80px; margin-bottom:16px;" />
+    <p id="modal-text" style="font-size:18px; font-weight:600; margin-bottom:20px;"></p>
+    <button id="close-modal-btn"
+            style="padding:10px 24px; background:var(--accent); color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:14px; font-weight:700;">
+      Close
+    </button>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <p>&copy; 2025 FreshRoute · Built for CodePath WEB101</p>
+  <div id="google_translate_element"></div>
+</footer>
+
+<script src="index.js"></script>
+
+<script>
+  (function () {
+    var themeBtn = document.getElementById('theme-btn');
+
+    function currentTheme() {
+      return document.documentElement.dataset.theme ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    }
+    function syncLabel() {
+      themeBtn.textContent = currentTheme() === 'dark' ? 'Light Mode' : 'Dark Mode';
+    }
+
+    syncLabel();
+    themeBtn.addEventListener('click', function () {
+      document.documentElement.dataset.theme = currentTheme() === 'dark' ? 'light' : 'dark';
+      syncLabel();
+    });
+  })();
+</script>
+
+</body>
+</html>
